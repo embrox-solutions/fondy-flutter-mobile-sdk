@@ -238,12 +238,12 @@ void main() {
 
     group('payToken', () {
       test('should throw exception with invalid credit card', () {
-        expect(() => cloudipsp.payToken(cardInvalid, someToken),
+        expect(() => cloudipsp.payOrderToken(cardInvalid, someToken),
             thrownArgumentError('CreditCard is not valid'));
       });
       test('should successfully pay', () async {
         final receivedReceipt =
-            await cloudipsp.payToken(cardSuccessNormal, someToken);
+            await cloudipsp.payOrderToken(cardSuccessNormal, someToken);
         expect(receivedReceipt, receipt);
       });
     });

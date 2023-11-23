@@ -146,6 +146,23 @@ class Api {
     return _call('api/checkout/ajax', request);
   }
 
+  Future<dynamic> checkoutRecTokenCard(
+      {required int merchantId,
+      required Order order,
+      required String rectoken,
+      required String signature}) {
+    final Map<String, dynamic> request = HashMap();
+    request['order_id'] = order.id;
+    request['order_desc'] = order.description;
+    request['currency'] = order.currency;
+    request['amount'] = order.amount.toString();
+    request['rectoken'] = rectoken;
+    request['signature'] = signature;
+    request['merchant_id'] = merchantId.toString();
+
+    return _call('api/recurring', request);
+  }
+
   Future<dynamic> checkoutNativePay(
       String token, String? email, String paymentSystem, dynamic data) {
     final Map<String, dynamic> request = HashMap();

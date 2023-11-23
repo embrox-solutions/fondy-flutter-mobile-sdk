@@ -165,7 +165,7 @@ class _ExampleState extends State<Example> {
       if (_orderMode == ExampleOrderMode.Order) {
         return cloudipsp.pay(creditCard, _getOrder());
       } else if (_orderMode == ExampleOrderMode.Token) {
-        return cloudipsp.payToken(creditCard, _getToken());
+        return cloudipsp.payOrderToken(creditCard, _getToken());
       } else {
         throw StateError('Unsupported mode $_orderMode');
       }

@@ -11,6 +11,7 @@ class Order {
   final String id;
   final String description;
   final String? email;
+  final bool requiredRecToken;
 
   String? _productId;
   String? paymentSystems;
@@ -18,25 +19,24 @@ class Order {
   int lifetime = -1;
   String? _merchantData;
   bool preauth = false;
-  bool requiredRecToken = false;
   bool verification = false;
   Verification verificationType = Verification.amount;
   String? recToken;
   String? _version;
   Lang? lang;
-  String? _serverCallbackUrl;
   String? reservationData;
+  String? _serverCallbackUrl;
   bool delayed = false;
 
   final Map<String, String> arguments = HashMap();
 
   Order(
-    this.amount,
-    this.currency,
-    this.id,
-    this.description,
-    this.email,
-  ) {
+      {required this.amount,
+      required this.currency,
+      required this.id,
+      required this.description,
+      required this.email,
+      this.requiredRecToken = false}) {
     if (amount < 0) {
       throw ArgumentError('Amount should be more than 0');
     }

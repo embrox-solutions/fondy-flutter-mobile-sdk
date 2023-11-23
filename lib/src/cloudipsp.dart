@@ -29,7 +29,9 @@ abstract class Cloudipsp {
 
   Future<Receipt> pay(CreditCard creditCard, Order order);
 
-  Future<Receipt> payToken(CreditCard card, String token);
+  Future<Receipt> payCardToken(String token, String signature, Order order);
+
+  Future<Receipt> payOrderToken(CreditCard card, String token);
 
   Future<Receipt> applePay(Order order);
 
@@ -111,7 +113,19 @@ class CloudipspImpl implements Cloudipsp {
   }
 
   @override
-  Future<Receipt> payToken(CreditCard card, String token) async {
+  Future<Receipt> payCardToken(
+      String rectoken, String signature, Order order) async {
+    final checkoutResponse = await _api.checkoutRecTokenCard(
+        merchantId: merchantId,
+        order: order,
+        rectoken: rectoken,
+        signature: signature);
+
+    return Receipt.fromJson(checkoutResponse['response'], 'responseUrl')!;
+  }
+
+  @override
+  Future<Receipt> payOrderToken(CreditCard card, String token) async {
     if (!card.isValid() || !(card is PrivateCreditCard)) {
       throw ArgumentError("CreditCard is not valid");
     }
@@ -260,8 +274,8 @@ class CloudipspImpl implements Cloudipsp {
 
     final response = await _api.call3ds(url, body, contentType);
     final completer = new Completer<Receipt?>();
-    _cloudipspWebViewHolder(PrivateCloudipspWebViewConfirmation(_native,
-        Api.API_HOST, url, callbackUrl, response, completer));
+    _cloudipspWebViewHolder(PrivateCloudipspWebViewConfirmation(
+        _native, Api.API_HOST, url, callbackUrl, response, completer));
     return completer.future;
   }
 }
