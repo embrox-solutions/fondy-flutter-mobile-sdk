@@ -258,6 +258,10 @@ class CloudipspImpl implements Cloudipsp {
     String body;
     String contentType;
 
+    if (!(checkoutResponse as Map<String, dynamic>).containsKey('send_data')) {
+      return null;
+    }
+
     final sendData = checkoutResponse['send_data'] as Map<String, dynamic>;
     if (sendData['PaReq'] == '') {
       body = jsonEncode(sendData);
